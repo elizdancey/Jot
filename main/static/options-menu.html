@@ -1,0 +1,30 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jot!</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?{% now 'U' %}"/>
+  </head>
+  <body>
+    <ul class = "top">
+        <li><img src ="{% static 'jot-logo.png' %}" class = "logo"> </li>
+        <li style = "padding-left:15%"><img src = "{% static 'profile.png' %}" class = "profile"></li>
+        <li class = "jot-button"><a href="">JOT SOMETHING</a></li>
+    </ul>
+    <ul class = "side">
+        <li><a href=""><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
+        <li class="side-bar-text">Home</li>
+        <li><a href=""><img src ="{% static 'add-button.png' %}" class = "side-bar-images"></a></li>
+        <li class="side-bar-text">Create a new folder</li>
+    </ul>
+    <div class = "container">
+       <div style = "padding-bottom: 10%;" class = "welcome">YOUR LATEST . . .
+          <div class = "entries">Entry 1</div>
+          <div class = "entries">Entry 2</div>
+          <div class = "entries">Entry 3</div>
+       </div>
+    </div>
+  </body>
+</html>
