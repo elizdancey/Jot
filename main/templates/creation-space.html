@@ -7,6 +7,79 @@
     <title>Jot!</title>
     <link rel="stylesheet" href="{% static 'style.css' %}?{% now 'U' %}"/>
   </head>
-<body>
-<h1>TEST</h1>
-</body>
+  <body>
+    <ul class = "top">
+        <li><img src ="{% static 'jot-logo.png' %}" class = "logo"> </li>
+        <li style = "padding-left:15%"><img src = "{% static 'profile.png' %}" class = "profile"></li>
+        <li class = "jot-button"><a href="{% url 'creation_space' %}">JOT SOMETHING</a></li>
+    </ul>
+    <ul class = "side">
+        <li>
+          {% if user.is_authenticated %}
+          Hi {{ user.username }}!
+        <li><a href="{% url 'main' %}"><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
+        <li class="side-bar-text">Home</li>
+        <li><a href="accounts/login"><img src ="{% static 'logout.png' %}" class = "side-bar-images"></a></li>
+        <li class="side-bar-text">Logout</li>
+        
+          {% else %}
+          <p>You are not logged in</p>
+        
+          {% endif %}</li>
+          <li><a href="{% url 'main' %}"><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
+          <li class="side-bar-text">Home</li>
+          <li><a href="{% url 'login' %}"><img src ="{% static 'login.png' %}" class = "side-bar-images"></a></li>
+          <li class="side-bar-text">Login</li>
+    </ul>
+    <div class = "container">
+      <h2>Create Journal Entry</h2>
+      <form id="journalForm">
+        <input type="text" id="title" placeholder="Title" required><br>
+        <textarea id="content" placeholder="What's on your mind?" required></textarea><br>
+        <button type="submit">Save Entry</button>
+      </form>
+      <div id="message"></div>
+    </div>
+  </body>
+  <script>
+    document.getElementById('journalForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+    
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+    
+        fetch('/api/journal/create/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // if using CSRF
+            },
+            body: JSON.stringify({ title, content })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                document.getElementById('message').innerText = 'Journal saved!';
+            } else {
+                document.getElementById('message').innerText = 'Error: ' + data.message;
+            }
+        });
+    });
+    
+    // CSRF helper
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const trimmed = cookie.trim();
+                if (trimmed.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(trimmed.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    </script>
+</html>

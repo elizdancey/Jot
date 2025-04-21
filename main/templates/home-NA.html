@@ -11,28 +11,21 @@
     <ul class = "top">
         <li><img src ="{% static 'jot-logo.png' %}" class = "logo"> </li>
         <li style = "padding-left:15%"><img src = "{% static 'profile.png' %}" class = "profile"></li>
-        <li class = "jot-button"><a href="{% url 'creation_space' %}">JOT SOMETHING</a></li>
+        <li class = "jot-button"><a href="">JOT SOMETHING</a></li>
     </ul>
     <ul class = "side">
         <li>
           {% if user.is_authenticated %}
           Hi {{ user.username }}!
-        <li><a href="{% url 'main' %}"><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
-        <li class="side-bar-text">Home</li>
-
-        <li><a href="accounts/login"><img src ="{% static 'logout.png' %}" class = "side-bar-images"></a></li>
-        <li class="side-bar-text">Logout</li>
-        
         
           {% else %}
           <p>You are not logged in</p>
-        <li><a href="{% url 'main' %}"><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
-        <li class="side-bar-text">Home</li>
-        <li><a href="accounts/login/"><img src ="{% static 'login.png' %}" class = "side-bar-images"></a></li>
-        <li class="side-bar-text">Login</li>
         
           {% endif %}</li>
-
+        <li><a href=""><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
+        <li class="side-bar-text">Home</li>
+        <li><a href=""><img src ="{% static 'logout.png' %}" class = "side-bar-images"></a></li>
+        <li class="side-bar-text">Logout</li>
     </ul>
     <div class = "container">
        <div style = "padding-bottom: 10%;" class = "welcome">YOUR LATEST . . .

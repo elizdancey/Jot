@@ -1,7 +1,9 @@
+/*ALL*/
 body{
   background-image: linear-gradient(yellow, green);
 }
 
+/*HOME*/
 .side {
     list-style-type: none;
     margin: 0;
@@ -122,5 +124,24 @@ body{
 
   .side-bar-text{
     text-align:center;
+  }
+
+  /*LOGIN + REGISTRATION*/
+  .logo-2{
+    height:35%;
+    width:35%;
+    display:block;
+    margin-right:auto;
+    margin-left: auto;
+  }
+
+  .heading{
+    text-align: center;
+  }
+
+  .form{
+    text-align: center;
+    list-style: none;
+    margin-bottom: 65%;
   }
 

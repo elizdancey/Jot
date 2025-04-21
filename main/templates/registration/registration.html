@@ -7,9 +7,13 @@
     <title>Jot!</title>
     <link rel="stylesheet" href="{% static 'style.css' %}?{% now 'U' %}"/>
   </head>
-  <h2>Sign up</h2>
-  <form method="post">
+  <h2><img class = "logo-2" src ="{% static 'jot-logo.png' %}"></h2>
+  <h2 class ="heading">Sign up!</h2>
+
+  <div class="form">
+  <form  method="post">
     {% csrf_token %}
     {{ form }}
     <button type="submit">Sign Up</button>
   </form>
+  </div>
