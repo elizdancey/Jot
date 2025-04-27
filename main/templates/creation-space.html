@@ -10,33 +10,39 @@
   <body>
     <ul class = "top">
         <li><img src ="{% static 'jot-logo.png' %}" class = "logo"> </li>
-        <li style = "padding-left:15%"><img src = "{% static 'profile.png' %}" class = "profile"></li>
+        <li style = "padding-left:15%"><a href ="{% url 'settings' %}"><img src="{{ user.profile.profile_pic.url }}" class="profile" alt="Profile Pic"  class="profile-pic"></li>
         <li class = "jot-button"><a href="{% url 'creation_space' %}">JOT SOMETHING</a></li>
     </ul>
     <ul class = "side">
         <li>
           {% if user.is_authenticated %}
-          Hi {{ user.username }}!
+          <h2 class="user">Hi {{ user.username }}!</h2>
         <li><a href="{% url 'main' %}"><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
         <li class="side-bar-text">Home</li>
-        <li><a href="accounts/login"><img src ="{% static 'logout.png' %}" class = "side-bar-images"></a></li>
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button class ="button" type="submit"><img src ="{% static 'logout.png' %}" class = "side-bar-images"></button>
+        </form>
         <li class="side-bar-text">Logout</li>
         
           {% else %}
-          <p>You are not logged in</p>
-        
-          {% endif %}</li>
+          <h2 class ="user">You are not logged in</h2>
           <li><a href="{% url 'main' %}"><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
           <li class="side-bar-text">Home</li>
-          <li><a href="{% url 'login' %}"><img src ="{% static 'login.png' %}" class = "side-bar-images"></a></li>
-          <li class="side-bar-text">Login</li>
+          <li><a href="accounts/login/"><img src ="{% static 'login.png' %}" class = "side-bar-images"></a></li>
+        <li class="side-bar-text">Login</li>
+        
+          {% endif %}</li>
+      
     </ul>
     <div class = "container">
-      <h2>Create Journal Entry</h2>
+      <div class="header">
+        <h2 class="head-title"></h2class>Create Journal Entry</h2>
+      </div>
       <form id="journalForm">
-        <input type="text" id="title" placeholder="Title" required><br>
+        <input class="tiny-title" type="text" id="title" placeholder="Title" required><br>
         <textarea id="content" placeholder="What's on your mind?" required></textarea><br>
-        <button type="submit">Save Entry</button>
+        <button class ="buttons-1" type="submit">Save Entry</button>
       </form>
       <div id="message"></div>
     </div>
@@ -58,6 +64,7 @@
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             if (data.status === 'success') {
                 document.getElementById('message').innerText = 'Journal saved!';
             } else {

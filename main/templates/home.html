@@ -10,17 +10,23 @@
   <body>
     <ul class = "top">
         <li><img src ="{% static 'jot-logo.png' %}" class = "logo"> </li>
-        <li style = "padding-left:15%"><img src = "{% static 'profile.png' %}" class = "profile"></li>
+        <li style = "padding-left:15%"><a href ="{% url 'settings' %}">{% if user.profile.profile_pic %}
+          <img src="{{ user.profile.profile_pic.url }}" class = "profile" alt="Profile Picture">
+        {% else %}
+          <img src="/media/profile_pics/profile.png" class = "profile" alt="Default Profile Picture">
+        {% endif %}</li>
         <li class = "jot-button"><a href="{% url 'creation_space' %}">JOT SOMETHING</a></li>
     </ul>
     <ul class = "side">
         <li>
           {% if user.is_authenticated %}
-          Hi {{ user.username }}!
+          <h2 class="user">Hi {{ user.username }}!</h2>
         <li><a href="{% url 'main' %}"><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
         <li class="side-bar-text">Home</li>
-
-        <li><a href="accounts/login"><img src ="{% static 'logout.png' %}" class = "side-bar-images"></a></li>
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button class ="button" type="submit"><img src ="{% static 'logout.png' %}" class = "side-bar-images"></button>
+        </form>
         <li class="side-bar-text">Logout</li>
         
         
@@ -35,11 +41,97 @@
 
     </ul>
     <div class = "container">
-       <div style = "padding-bottom: 10%;" class = "welcome">YOUR LATEST . . .
-          <div class = "entries">Entry 1</div>
-          <div class = "entries">Entry 2</div>
-          <div class = "entries">Entry 3</div>
+        
+       
+        <div class ="header">
+        <h2 class="head-title">YOUR LATEST . . .</h2>
+        </div>
+        <div class ="welcome">
+        {% if entries %}
+          <ul>
+            {% for entry in entries %}
+            <li>
+              <div class = "entries">
+              <strong class ="entry-title">{{ entry.title }}</strong><br>
+                    <em class ="date">{{ entry.created_at|date:"F j, Y, g:i a" }}</em><br>
+                    <p>{{ entry.content|truncatechars:25 }}</p>
+                    <form method="post" action="{% url 'delete_journal' entry.id %}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this entry?');">
+                      {% csrf_token %}
+                      <button class ="buttons-2" type="submit">Delete</button>
+                  </form>
+                  
+                  <a href="{% url 'edit_journal_page' entry.id %}">
+                    <button class ="buttons-2">View</button>
+                </a>
+              </div>
+
+
+            </li>
+            <hr>
+            {% endfor %}
+          </ul>
+        {% else %}
+        <p>You haven't written anything yet.</p>
+        {% endif %}
+        <div id="editForm" style="display:none;">
+          <h3>Journal Entry</h3>
+          <input type="text" id="Title" placeholder="Title"><br>
+          <textarea id="editContent" placeholder="Edit your content"></textarea><br>
+          <button onclick="submitEdit()">Save Changes</button>
+          <button onclick="cancelEdit()">Cancel</button>
+      </div>
        </div>
     </div>
+    <script>
+      let editingId = null;
+      
+      function startEdit(id, title, content) {
+          editingId = id;
+          document.getElementById('editTitle').value = title;
+          document.getElementById('editContent').value = content;
+          document.getElementById('editForm').style.display = 'block';
+      }
+      
+      function cancelEdit() {
+          editingId = null;
+          document.getElementById('editForm').style.display = 'none';
+      }
+      
+      function submitEdit() {
+          const title = document.getElementById('editTitle').value;
+          const content = document.getElementById('editContent').value;
+      
+          fetch(`/journal/edit/${editingId}/`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': getCookie('csrftoken')
+              },
+              body: JSON.stringify({ title, content })
+          })
+          .then(response => response.json())
+          .then(data => {
+              alert(data.message);
+              if (data.status === 'success') {
+                  location.reload(); // Refresh to show updated entry
+              }
+          });
+      }
+      function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const trimmed = cookie.trim();
+            if (trimmed.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(trimmed.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+      </script>
   </body>
 </html>

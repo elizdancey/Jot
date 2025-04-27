@@ -13,8 +13,8 @@
 <form method="post">
   {% csrf_token %}
   {{ form }}
-  <button type="submit">Log In</button>
+  <button class ="buttons-2" type="submit">Log In</button>
 </form>
-<h3>Don't have an account? Sign up <a href = "{% url 'registration' %}">here!</a></h3>
+<h3>Don't have an account? Sign up <a class="here" href = "{% url 'registration' %}">here!</a></h3>
 </div>
 

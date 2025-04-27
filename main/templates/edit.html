@@ -1,0 +1,92 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jot!</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?{% now 'U' %}"/>
+  </head>
+  <body>
+    <ul class = "top">
+        <li><img src ="{% static 'jot-logo.png' %}" class = "logo"> </li>
+        <li style = "padding-left:15%"><a href ="{% url 'settings' %}"><img src="{{ user.profile.profile_pic.url }}" class="profile" alt="Profile Pic"></li>
+        <li class = "jot-button"><a href="{% url 'creation_space' %}">JOT SOMETHING</a></li>
+    </ul>
+    <ul class = "side">
+        <li>
+          {% if user.is_authenticated %}
+          <h2 class="user">Hi {{ user.username }}!</h2>
+        <li><a href="{% url 'main' %}"><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
+        <li class="side-bar-text">Home</li>
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button class ="button" type="submit"><img src ="{% static 'logout.png' %}" class = "side-bar-images"></button>
+        </form>
+        <li class="side-bar-text">Logout</li>
+        
+          {% else %}
+          <h2 class ="user">You are not logged in</h2>
+          <li><a href="{% url 'main' %}"><img src ="{% static 'home-button.png' %}" class = "side-bar-images"></a></li>
+          <li class="side-bar-text">Home</li>
+          <li><a href="accounts/login/"><img src ="{% static 'login.png' %}" class = "side-bar-images"></a></li>
+        <li class="side-bar-text">Login</li>
+        
+          {% endif %}</li>
+      
+    </ul>
+    <div class="container">
+        <div class="header">
+            <h2 class="head-title">{{ entry.title }}</h2>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <input class="tiny-title" type="text" name="title" value="{{ entry.title }}" required><br>
+            <textarea name="content" class="journal-textarea" required>{{ entry.content }}</textarea><br>
+            <button class ="buttons-1" type="submit">Save Changes</button>
+            <a href="{% url 'main' %}"><button class ="buttons-1" type = "submit">Cancel</button>
+        </form>
+    </div>
+  <script>
+    document.getElementById('journalForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+    
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+    
+        fetch('/api/journal/create/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // if using CSRF
+            },
+            body: JSON.stringify({ title, content })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.status === 'success') {
+                document.getElementById('message').innerText = 'Journal saved!';
+            } else {
+                document.getElementById('message').innerText = 'Error: ' + data.message;
+            }
+        });
+    });
+    
+    // CSRF helper
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const trimmed = cookie.trim();
+                if (trimmed.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(trimmed.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    </script>
+</html>

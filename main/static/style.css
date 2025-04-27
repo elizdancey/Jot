@@ -1,6 +1,7 @@
 /*ALL*/
 body{
   background-image: linear-gradient(yellow, green);
+  font-family: Roboto;
 }
 
 /*HOME*/
@@ -14,6 +15,7 @@ body{
     position: fixed; /* Make it stick, even on scroll */
     overflow: auto; /* Enable scrolling if the sidenav has too much content */
     box-shadow: 10px 10px 5px #154111;
+    font-weight: bolder;
   }
 
   .top{
@@ -63,9 +65,10 @@ body{
     clear: both;
     width: 39%;
     padding:15px;
-    margin-top: 20px;
     margin:auto;
     float:left;
+    font-size:larger;
+    font-weight: bolder;
 
   }
 
@@ -94,6 +97,8 @@ body{
     float:right;
     list-style-type: none;
     transform:translate(-20px,33px);
+    border-radius: 50%;
+    border:5px solid yellow
 
   }
 
@@ -111,6 +116,7 @@ body{
     border-color:#a9da14;
     border-width:thick;
     box-shadow:10px 10px 5px black;
+    font-weight:bolder;
   }
 
   .side-bar-images{
@@ -118,6 +124,7 @@ body{
     width:100%;
     float:left;
     margin-top:20%;
+    background-size: cover;
     
     
   }
@@ -145,3 +152,83 @@ body{
     margin-bottom: 65%;
   }
 
+  .user{
+    text-align:center;
+    font-size:130%;
+  }
+
+  .button{
+    background-color:transparent;
+    box-shadow: none;
+    border-radius: 0px;
+    outline: none;
+    border:none;
+  }
+
+  #editForm{
+    float:right;
+    transform:translate(400px,-250px);
+  }
+
+  textarea{
+  resize:none;        
+  height: 400px;       
+  width: 95%;          
+  padding: 20px;
+  margin:20px;
+  box-sizing: border-box;
+  }
+
+  #Title{
+    float:right;
+  }
+  
+  a, a:visited, a:hover, a:active {
+    color: inherit;
+    text-decoration: none;
+    
+  }
+
+  .date{
+    font-size: smaller;
+  }
+
+  .entry-title{
+    font-size:28px;
+    
+  }
+
+  .here:hover{
+    background-color:green ;
+  }
+
+  .here{
+    text-decoration: underline;
+  }
+
+  .tiny-title{
+    margin-left:2%;
+  }
+
+  .head-title{
+    margin-left:1%;
+  }
+
+  .header{
+    background-color: yellow;
+    margin:2%;
+    box-shadow:10px 10px 5px #154111;
+  }
+
+  .buttons-1{
+    margin:2%;
+    background-color: yellow;
+  
+  }
+
+  .buttons-2{
+    margin:2%;
+    background-color: green;
+  }
+
+  
